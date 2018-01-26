@@ -1,4 +1,4 @@
-package coap
+package provider
 
 import (
 	"encoding/hex"

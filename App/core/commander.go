@@ -1,13 +1,15 @@
-package coap
+package core
 
 import (
 	"log"
 	"os/exec"
 )
 
-type commander struct{}
+//Commander struct.
+type Commander struct{}
 
-func (s *commander) OnCmds(cmds string) error {
+//OnCmds method .
+func (s *Commander) OnCmds(cmds string) error {
 	cmd := exec.Command("sh", "-c", cmds)
 	output, err := cmd.CombinedOutput()
 	log.Println(string(output))
