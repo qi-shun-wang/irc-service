@@ -18,7 +18,7 @@ Give examples
 
 A step by step series of examples that tell you have to get a development env running
 
-Say what the step will be
+Build an executable file named IRCService for Android arm7 target :
 
 ```
 
@@ -26,39 +26,16 @@ env GOOS=linux GOARCH=arm GOARM=7 go build -o IRCService -v /Users/shun/go/src/I
 
 
 ```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
+ 
 ## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+ 
+Test muticast as a Listenner:
 
 ```
-Give an example
+go run .../src/IRCService/tester.go
 ```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
+ 
+ 
 ## Built With
 * [Golang](https://golang.org) - go 1.9.3
 * [go-CoAP](https://godoc.org/github.com/dustin/go-coap) - Package coap provides a CoAP client and server.
@@ -74,7 +51,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Shun,Billy** - *Initial work* - [PurpleBooth](https://bitbucket.org/ising99fullstack/ircservice)
+* **Shun,Billy** - *Initial work* - [IRCervice](https://bitbucket.org/ising99fullstack/ircservice)
 
 
 ## License
