@@ -1,5 +1,3 @@
-
-
 # IRCService
 
 Intelligent Remote Control Service.
