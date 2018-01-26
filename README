@@ -1,9 +1,4 @@
 
-build IRCService for KOD :
-env GOOS=linux GOARCH=arm GOARM=7 go build -o IRCService -v /Users/shun/go/src/IRCService/Run/main.go
-
-
-
 
 # IRCService
 
@@ -28,7 +23,10 @@ A step by step series of examples that tell you have to get a development env ru
 Say what the step will be
 
 ```
-Give the example
+
+env GOOS=linux GOARCH=arm GOARM=7 go build -o IRCService -v /Users/shun/go/src/IRCService/Run/main.go
+
+
 ```
 
 And repeat
