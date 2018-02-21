@@ -23,6 +23,17 @@ func KeyEventHandler(ci core.CoapInterface) core.CoapHandler {
 }
 
 func parsedKeySerial(number string) string {
+	//use regular expression will slow down response speed
+	// isMatch, _ := regexp.MatchString("^[0-9]+$", "0123456789")
+	// if !isMatch {
+	// 	fmt.Println("Not supported type :" + number)
+	// 	return ";"
+	// }
+
+	//use input keyevent will slow down response speed
+	// cmd := "input keyevent " + number
+	// fmt.Println(cmd)
+	// return cmd
 	cmds := []string{}
 
 	cmds = append(cmds, "sendevent /dev/input/event0 1 "+number+" 1")
@@ -34,4 +45,5 @@ func parsedKeySerial(number string) string {
 	fullCmds := strings.Join(cmds, ";")
 	fmt.Println(fullCmds)
 	return fullCmds
+
 }

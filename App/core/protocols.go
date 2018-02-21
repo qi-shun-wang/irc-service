@@ -11,5 +11,5 @@ type CoapHandler func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Mes
 
 //CoapInterface .
 type CoapInterface interface {
-	OnCmds(cmds string) error
+	OnCmds(cmds string) (string, error)
 }

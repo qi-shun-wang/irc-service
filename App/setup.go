@@ -2,7 +2,6 @@ package app
 
 import (
 	core "IRCService/app/core"
-	model "IRCService/app/model"
 	multicastProvider "IRCService/app/provider"
 	"log"
 
@@ -10,8 +9,7 @@ import (
 )
 
 var (
-	mux    = coap.NewServeMux()
-	device = model.Device{}
+	mux = coap.NewServeMux()
 )
 
 const (
@@ -23,15 +21,15 @@ const (
 func Run() {
 
 	log.Print("Muticast Provider Pinger On Start....")
-	go multicastProvider.RunPinger(defaultMulticastAddress, device.ToJSONString())
+	go multicastProvider.RunPinger(defaultMulticastAddress)
+	go multicastProvider.RunListenner(defaultMulticastAddress)
 	log.Print("Kod_Coap On Start....")
-	log.Fatal(coap.ListenAndServe("udp", ":"+coapPort, mux))
+	log.Print(coap.ListenAndServe("udp", ":"+coapPort, mux))
 
 }
 
 //Setup everything before call Run for running app.
 func Setup() {
 	c := core.Commander{}
-	device = model.Prepare()
 	setRouters(&c)
 }

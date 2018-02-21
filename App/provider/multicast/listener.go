@@ -22,13 +22,13 @@ func Listen(address string, handler func(*net.UDPAddr, int, []byte)) {
 	// Parse the string address
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	// Open up a connection
 	conn, err := net.ListenMulticastUDP("udp", nil, addr)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	conn.SetReadBuffer(maxDatagramSize)
@@ -38,7 +38,8 @@ func Listen(address string, handler func(*net.UDPAddr, int, []byte)) {
 		buffer := make([]byte, maxDatagramSize)
 		numBytes, src, err := conn.ReadFromUDP(buffer)
 		if err != nil {
-			log.Fatal("ReadFromUDP failed:", err)
+
+			log.Println("ReadFromUDP failed:", err)
 		}
 
 		handler(src, numBytes, buffer)

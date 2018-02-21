@@ -13,24 +13,10 @@ import (
 //MouseEventHandler .
 func MouseEventHandler(ci core.CoapInterface) core.CoapHandler {
 	return func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Message {
-
-		// if m.IsConfirmable() {
-
 		number := string(m.Payload)
 		log.Println(string(number))
 		cmds := parsedMouseSerial(number)
 		ci.OnCmds(cmds)
-
-		// res := &coap.Message{
-		// 	Type:      coap.Acknowledgement,
-		// 	Code:      coap.Content,
-		// 	MessageID: m.MessageID,
-		// 	Token:     m.Token,
-		// 	Payload:   []byte("success"),
-		// }
-		// res.SetOption(coap.ContentFormat, coap.TextPlain)
-		// return res
-		// }
 		return nil
 	}
 }
@@ -67,12 +53,12 @@ func parsedMouseSerial(number string) string {
 			cmds = append(cmds, "sendevent /dev/input/event0 2 1 "+delta)
 			cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
 		case '7':
-			cmds = append(cmds, "sendevent /dev/input/event0 2 0 -1")
+			cmds = append(cmds, "sendevent /dev/input/event0 2 0 -"+delta)
 			cmds = append(cmds, "sendevent /dev/input/event0 2 1 0")
 			cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
 		case '8':
-			cmds = append(cmds, "sendevent /dev/input/event0 2 0 -1")
-			cmds = append(cmds, "sendevent /dev/input/event0 2 1 -1")
+			cmds = append(cmds, "sendevent /dev/input/event0 2 0 -"+delta)
+			cmds = append(cmds, "sendevent /dev/input/event0 2 1 -"+delta)
 			cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
 		}
 

@@ -2,8 +2,8 @@ package provider
 
 import (
 	"IRCService/App/provider/multicast"
+	model "IRCService/app/model"
 	"encoding/hex"
-	"fmt"
 	"log"
 	"net"
 	"time"
@@ -11,7 +11,7 @@ import (
 
 //RunListenner .
 func RunListenner(defaultMulticastAddress string) {
-	fmt.Printf("Listening on %s\n", defaultMulticastAddress)
+	log.Printf("Listening on %s\n", defaultMulticastAddress)
 	multicast.Listen(defaultMulticastAddress, msgHandler)
 }
 
@@ -21,18 +21,19 @@ func msgHandler(src *net.UDPAddr, n int, b []byte) {
 }
 
 //RunPinger .
-func RunPinger(defaultMulticastAddress string, withInfo string) {
-	fmt.Printf("Broadcasting to %s\n", defaultMulticastAddress)
-	ping(defaultMulticastAddress, withInfo)
+func RunPinger(defaultMulticastAddress string) {
+	log.Printf("Broadcasting to %s\n", defaultMulticastAddress)
+	ping(defaultMulticastAddress)
 }
 
-func ping(addr string, withInfo string) {
+func ping(addr string) {
 	conn, err := multicast.NewBroadcaster(addr)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 
 	for {
+		withInfo := model.Prepare().ToJSONString()
 		conn.Write([]byte(withInfo))
 		time.Sleep(1 * time.Second)
 	}

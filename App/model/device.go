@@ -1,6 +1,7 @@
 package model
 
 import (
+	helper "IRCService/app/core"
 	"encoding/json"
 )
 
@@ -22,7 +23,7 @@ func (device Device) ToJSONString() string {
 //Prepare current KOD device Info.
 func Prepare() Device {
 	device := Device{}
-	device.Name = "KOD"
-	device.Address = "www.google.com"
+	device.Name = helper.GetDeviceName()
+	device.Address = helper.GetOutboundIP()
 	return device
 }
