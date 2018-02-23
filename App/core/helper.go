@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -37,7 +36,7 @@ func GetOutboundIP() string {
 
 			ip := network.IP.String()
 
-			fmt.Println("Resolved Host IP: " + ip)
+			log.Println("Resolved Host IP: " + ip)
 
 			return ip
 		}

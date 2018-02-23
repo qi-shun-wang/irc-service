@@ -2,7 +2,6 @@ package controllers
 
 import (
 	core "IRCService/app/core"
-	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -26,10 +25,10 @@ func parsedInput(text string) string {
 
 	cmds = append(cmds, "input text "+text+";")
 
-	fmt.Println("input text " + text + ";")
-	fmt.Println()
+	log.Println("input text " + text + ";")
+	log.Println()
 	fullCmds := strings.Join(cmds, ";")
-	fmt.Println(fullCmds)
+	log.Println(fullCmds)
 	return fullCmds
 
 }

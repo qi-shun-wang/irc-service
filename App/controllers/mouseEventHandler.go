@@ -2,7 +2,6 @@ package controllers
 
 import (
 	core "IRCService/app/core"
-	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -26,7 +25,7 @@ func parsedMouseSerial(number string) string {
 	delta := "32"
 	for pos, char := range number {
 
-		fmt.Printf("%d %c", pos, char)
+		log.Printf("%d %c", pos, char)
 		switch char {
 		case '1':
 			cmds = append(cmds, "sendevent /dev/input/event0 2 0 0")
@@ -64,8 +63,8 @@ func parsedMouseSerial(number string) string {
 
 	}
 	cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
-	fmt.Println()
+	log.Println()
 	fullCmds := strings.Join(cmds, ";")
-	fmt.Println(fullCmds)
+	log.Println(fullCmds)
 	return fullCmds
 }

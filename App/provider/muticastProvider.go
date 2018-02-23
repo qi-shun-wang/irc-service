@@ -4,7 +4,6 @@ import (
 	"IRCService/App/provider/multicast"
 	model "IRCService/app/model"
 	"encoding/hex"
-	"fmt"
 	"log"
 	"net"
 	"time"
@@ -17,7 +16,7 @@ func RunListenner(defaultMulticastAddress string) {
 	err := multicast.Listen(defaultMulticastAddress, msgHandler)
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Listener  will be recovered in ", r)
+			log.Println("Listener  will be recovered in ", r)
 			time.Sleep(1 * time.Second)
 			RunListenner(defaultMulticastAddress)
 		}
@@ -39,7 +38,7 @@ func RunPinger(defaultMulticastAddress string) {
 	err := ping(defaultMulticastAddress)
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Pinger will be recovered in ", r)
+			log.Println("Pinger will be recovered in ", r)
 			time.Sleep(1 * time.Second)
 			RunPinger(defaultMulticastAddress)
 		}

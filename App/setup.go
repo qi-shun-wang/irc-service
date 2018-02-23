@@ -3,7 +3,6 @@ package app
 import (
 	core "IRCService/app/core"
 	multicastProvider "IRCService/app/provider"
-	"fmt"
 	"log"
 	"time"
 
@@ -24,14 +23,14 @@ func startServcie() {
 	err := coap.ListenAndServe("udp", ":"+coapPort, mux)
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Coap service will be recovered in ", r)
+			log.Println("Coap service will be recovered in ", r)
 			time.Sleep(1 * time.Second)
-			c.OnCmds("kill -9 $(lsof -t -i:5683)")
+			c.OnCmds("kill -9 $(lsof -t -i:" + coapPort + ")")
 			startServcie()
 		}
 	}()
 	if err != nil {
-		panic("5683 port is already in use ...")
+		panic(coapPort + " port is already in use ...")
 	}
 	log.Println("IRCService Started ....")
 }

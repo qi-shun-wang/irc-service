@@ -2,7 +2,6 @@ package controllers
 
 import (
 	core "IRCService/app/core"
-	"fmt"
 	"log"
 	"net"
 	"strings"
@@ -26,16 +25,16 @@ func parsedKeySerial(number string) string {
 	//use regular expression will slow down response speed
 	// isMatch, _ := regexp.MatchString("^[0-9]+$", "0123456789")
 	// if !isMatch {
-	// 	fmt.Println("Not supported type :" + number)
+	// 	log.Println("Not supported type :" + number)
 	// 	return ";"
 	// }
 	//use input keyevent will slow down response speed
 	cmds := []string{}
 	cmds = append(cmds, "input keyevent "+number)
-	fmt.Println("current keyevent serial:" + number)
-	fmt.Println()
+	log.Println("current keyevent serial:" + number)
+	log.Println()
 	fullCmds := strings.Join(cmds, ";")
-	fmt.Println(fullCmds)
+	log.Println(fullCmds)
 	return fullCmds
 
 }
