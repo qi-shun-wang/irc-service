@@ -18,17 +18,19 @@ const (
 
 // Listen binds to the UDP address and port given and writes packets received
 // from that address to a buffer which is passed to a hander
-func Listen(address string, handler func(*net.UDPAddr, int, []byte)) {
+func Listen(address string, handler func(*net.UDPAddr, int, []byte)) error {
 	// Parse the string address
 	addr, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
-		log.Println(err)
+		log.Println("UDP address can't resolved by listener: ", err)
+		return err
 	}
 
 	// Open up a connection
 	conn, err := net.ListenMulticastUDP("udp", nil, addr)
 	if err != nil {
-		log.Println(err)
+		log.Println("ListenMulticastUDP can't open the connection: ", err)
+		return err
 	}
 
 	conn.SetReadBuffer(maxDatagramSize)
@@ -38,8 +40,7 @@ func Listen(address string, handler func(*net.UDPAddr, int, []byte)) {
 		buffer := make([]byte, maxDatagramSize)
 		numBytes, src, err := conn.ReadFromUDP(buffer)
 		if err != nil {
-
-			log.Println("ReadFromUDP failed:", err)
+			log.Println("ReadFromUDP failed: ", err)
 		}
 
 		handler(src, numBytes, buffer)

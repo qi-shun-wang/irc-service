@@ -13,7 +13,7 @@ func GetDeviceName() string {
 	result, err := c.OnCmds("settings --user current list global |grep -w device_name")
 
 	if err != nil {
-		log.Println(err)
+		log.Println("GetDeviceName:", err)
 	}
 	deviceName := strings.TrimPrefix(result, "device_name=")
 	log.Print(deviceName)
@@ -26,7 +26,7 @@ func GetOutboundIP() string {
 	netInterfaceAddresses, err := net.InterfaceAddrs()
 
 	if err != nil {
-		return ""
+		log.Println("GetOutboundIP:", err)
 	}
 
 	for _, netInterfaceAddress := range netInterfaceAddresses {

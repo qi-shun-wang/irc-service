@@ -4,6 +4,7 @@ import (
 	"IRCService/App/provider/multicast"
 	model "IRCService/app/model"
 	"encoding/hex"
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -11,8 +12,19 @@ import (
 
 //RunListenner .
 func RunListenner(defaultMulticastAddress string) {
+	log.Print("Muticast Provider RunListenner On Start....")
 	log.Printf("Listening on %s\n", defaultMulticastAddress)
-	multicast.Listen(defaultMulticastAddress, msgHandler)
+	err := multicast.Listen(defaultMulticastAddress, msgHandler)
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Listener  will be recovered in ", r)
+			time.Sleep(1 * time.Second)
+			RunListenner(defaultMulticastAddress)
+		}
+	}()
+	if err != nil {
+		panic("Wifi conn is broken...")
+	}
 }
 
 func msgHandler(src *net.UDPAddr, n int, b []byte) {
@@ -22,14 +34,27 @@ func msgHandler(src *net.UDPAddr, n int, b []byte) {
 
 //RunPinger .
 func RunPinger(defaultMulticastAddress string) {
+	log.Print("Muticast Provider Pinger On Start....")
 	log.Printf("Broadcasting to %s\n", defaultMulticastAddress)
-	ping(defaultMulticastAddress)
+	err := ping(defaultMulticastAddress)
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Pinger will be recovered in ", r)
+			time.Sleep(1 * time.Second)
+			RunPinger(defaultMulticastAddress)
+		}
+	}()
+	if err != nil {
+		log.Print(err)
+		panic("Wifi conn is broken...")
+	}
 }
 
-func ping(addr string) {
+func ping(addr string) error {
 	conn, err := multicast.NewBroadcaster(addr)
 	if err != nil {
 		log.Print(err)
+		return err
 	}
 
 	for {
