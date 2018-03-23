@@ -16,14 +16,15 @@ func CommandHandler(ci core.CoapInterface) core.CoapHandler {
 
 			cmdstr := string(m.Payload)
 			log.Println(string(cmdstr))
-			ci.OnCmds(cmdstr)
+
+			result, _ := ci.OnDebugCmds(cmdstr)
 
 			res := &coap.Message{
 				Type:      coap.Acknowledgement,
 				Code:      coap.Content,
 				MessageID: m.MessageID,
 				Token:     m.Token,
-				Payload:   []byte("success"),
+				Payload:   []byte(result),
 			}
 			res.SetOption(coap.ContentFormat, coap.TextPlain)
 			return res
