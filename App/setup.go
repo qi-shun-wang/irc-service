@@ -16,31 +16,32 @@ var (
 
 const (
 	coapPort                = "5683"
+	coapPort2               = "5684"
 	defaultMulticastAddress = "239.0.0.0:9999"
 )
 
-func startServcie() {
-	err := coap.ListenAndServe("udp", ":"+coapPort, mux)
+func startServcie(port string) {
+	err := coap.ListenAndServe("udp", ":"+port, mux)
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Coap service will be recovered in ", r)
 			time.Sleep(1 * time.Second)
-			c.OnCmds("kill -9 $(lsof -t -i:" + coapPort + ")")
-			startServcie()
+			c.OnCmds("kill -9 $(lsof -t  /system/bin/IRCService)")
+			startServcie(port)
 		}
 	}()
 	if err != nil {
-		panic(coapPort + " port is already in use ...")
+		panic(port + " port is already in use ...")
 	}
 	log.Println("IRCService Started ....")
 }
 
 //Run app.
 func Run() {
-	go multicastProvider.RunPinger(defaultMulticastAddress)
-	go multicastProvider.RunListenner(defaultMulticastAddress)
 	log.Println("IRCService On Start....")
-	startServcie()
+	go multicastProvider.RunPinger(defaultMulticastAddress)
+	// go multicastProvider.RunListenner(defaultMulticastAddress)
+	startServcie(coapPort)
 
 }
 

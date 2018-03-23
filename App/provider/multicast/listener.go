@@ -20,14 +20,14 @@ const (
 // from that address to a buffer which is passed to a hander
 func Listen(address string, handler func(*net.UDPAddr, int, []byte)) error {
 	// Parse the string address
-	addr, err := net.ResolveUDPAddr("udp", address)
+	group, err := net.ResolveUDPAddr("udp", address)
 	if err != nil {
 		log.Println("UDP address can't resolved by listener: ", err)
 		return err
 	}
 
 	// Open up a connection
-	conn, err := net.ListenMulticastUDP("udp", nil, addr)
+	conn, err := net.ListenMulticastUDP("udp", nil, group)
 	if err != nil {
 		log.Println("ListenMulticastUDP can't open the connection: ", err)
 		return err

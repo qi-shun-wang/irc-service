@@ -3,11 +3,12 @@ package provider
 import (
 	"IRCService/App/provider/multicast"
 	model "IRCService/app/model"
-	"encoding/hex"
 	"log"
 	"net"
 	"time"
 )
+
+var device = model.Device{}
 
 //RunListenner .
 func RunListenner(defaultMulticastAddress string) {
@@ -27,8 +28,8 @@ func RunListenner(defaultMulticastAddress string) {
 }
 
 func msgHandler(src *net.UDPAddr, n int, b []byte) {
-	log.Println(n, "bytes read from", src)
-	log.Println(hex.Dump(b[:n]))
+	// log.Println(n, "bytes read from", src)
+	// log.Println(string(hex.Dump(b[:n])))
 }
 
 //RunPinger .
@@ -57,8 +58,15 @@ func ping(addr string) error {
 	}
 
 	for {
-		withInfo := model.Prepare().ToJSONString()
-		conn.Write([]byte(withInfo))
-		time.Sleep(1 * time.Second)
+		// log.Println("device.Prepare....")
+		device = model.Prepare()
+		// log.Println(device.ToJSONString())
+		withInfo := device.ToJSONString()
+
+		_, err := conn.Write([]byte(withInfo))
+		if err != nil {
+			log.Print(err)
+			return err
+		}
 	}
 }

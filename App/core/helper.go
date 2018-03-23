@@ -3,44 +3,76 @@ package core
 import (
 	"log"
 	"net"
-	"strings"
 )
 
-//GetDeviceName .
-func GetDeviceName() string {
+//GetSettingsSystemInfo .
+func GetSettingsSystemInfo(ch chan string) {
 	c := Commander{}
-	result, err := c.OnCmds("settings --user current list global |grep -w device_name")
+	result, err := c.OnCmds("settings --user current list system;")
+
+	if err != nil {
+		log.Println("GetSettingsSystemInfo ERR:", err)
+		// return err.Error()
+		ch <- err.Error()
+	}
+
+	// log.Print("SUCCESS --> GetSettingsSystemInfo")
+	ch <- result
+	// return result
+}
+
+//GetDeviceName .
+func GetDeviceName(ch chan string) {
+	cmd := Commander{}
+	result, err := cmd.OnCmds("settings --user current get global device_name;")
 
 	if err != nil {
 		log.Println("GetDeviceName:", err)
 	}
-	deviceName := strings.TrimPrefix(result, "device_name=")
-	log.Print(deviceName)
-	return deviceName
+	// log.Print("GetDeviceName  -->:" + result)
+	ch <- result
 }
 
 //GetOutboundIP .
-func GetOutboundIP() string {
+func GetOutboundIP(ch chan string) {
 
-	netInterfaceAddresses, err := net.InterfaceAddrs()
+	ifaces, err := net.Interfaces()
 
+	// handle err
 	if err != nil {
 		log.Println("GetOutboundIP:", err)
 	}
+	for _, i := range ifaces {
+		addrs, err := i.Addrs()
+		// handle err
+		if err != nil {
+			log.Println("GetOutboundIP handler:", err)
+		}
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
 
-	for _, netInterfaceAddress := range netInterfaceAddresses {
+				ip = v.IP
+				if !ip.IsLoopback() &&
+					ip.To4() != nil &&
+					!ip.IsMulticast() &&
+					!ip.IsLinkLocalMulticast() &&
+					!ip.IsInterfaceLocalMulticast() &&
+					// !ip.IsGlobalUnicast() { //&& //two of the ip is gone
+					!ip.IsLinkLocalUnicast() { //&&
+					//!ip.IsUnspecified() {
 
-		network, ok := netInterfaceAddress.(*net.IPNet)
+					// log.Println("Resolved Host IPNet: " + ip.String())
+					ch <- ip.String()
+					return
+				}
 
-		if ok && !network.IP.IsLoopback() && network.IP.To4() != nil {
-
-			ip := network.IP.String()
-
-			log.Println("Resolved Host IP: " + ip)
-
-			return ip
+			case *net.IPAddr:
+				ip = v.IP
+				// log.Println("Resolved Host IPAddr: " + ip.String())
+				ch <- ip.String()
+			}
 		}
 	}
-	return ""
-
 }
