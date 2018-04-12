@@ -12,5 +12,6 @@ func setRouters(ci core.CoapInterface) {
 	mux.Handle("mouseEvent", coap.FuncHandler(handlers.MouseEventHandler(ci)))
 	mux.Handle("keyEvent", coap.FuncHandler(handlers.KeyEventHandler(ci)))
 	mux.Handle("sendEvent", coap.FuncHandler(handlers.SendEventHandler(ci)))
+	mux.Handle("sendLongPressedEvent", coap.FuncHandler(handlers.SendLongPressedEvent(ci)))
 	mux.Handle("textInput", coap.FuncHandler(handlers.TextInputHandler(ci)))
 }

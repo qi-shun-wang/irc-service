@@ -33,6 +33,18 @@ func GetDeviceName(ch chan string) {
 	ch <- result
 }
 
+//GetBackupIP .
+func GetBackupIP(ch chan string) {
+	cmd := Commander{}
+	result, err := cmd.OnCmds("ip addr show wlan0  | grep 'inet ' | cut -d' ' -f6|cut -d/ -f1;")
+
+	if err != nil {
+		log.Println("GetBackupIP:", err)
+	}
+	// log.Print("GetDeviceName  -->:" + result)
+	ch <- result
+}
+
 //GetOutboundIP .
 func GetOutboundIP(ch chan string) {
 
