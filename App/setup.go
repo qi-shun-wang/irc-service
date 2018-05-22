@@ -21,7 +21,7 @@ const (
 )
 
 func startServcie(port string) {
-	err := coap.ListenAndServe("udp", ":"+port, mux)
+	err := coap.ListenAndServe("udp", "0.0.0.0:"+port, mux)
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Coap service will be recovered in ", r)
@@ -42,7 +42,6 @@ func Run() {
 	go multicastProvider.RunPinger(defaultMulticastAddress)
 	// go multicastProvider.RunListenner(defaultMulticastAddress)
 	startServcie(coapPort)
-
 }
 
 //Setup everything before call Run for running app.
