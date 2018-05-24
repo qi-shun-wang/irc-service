@@ -21,7 +21,7 @@ const (
 )
 
 func startServcie(port string) {
-	err := coap.ListenAndServe("udp", "0.0.0.0:"+port, mux)
+	err := coap.ListenAndServe("udp", ":"+port, mux)
 	defer func() {
 		if r := recover(); r != nil {
 			log.Println("Coap service will be recovered in ", r)
