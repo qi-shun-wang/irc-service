@@ -18,6 +18,7 @@ const (
 	coapPort                = "5683"
 	coapPort2               = "5684"
 	defaultMulticastAddress = "239.0.0.0:9999"
+	broadcastAddress        = "192.168.34.255:9999"
 )
 
 func startServcie(port string) {
@@ -39,7 +40,9 @@ func startServcie(port string) {
 //Run app.
 func Run() {
 	log.Println("IRCService On Start....")
+	go multicastProvider.RunPinger(broadcastAddress)
 	go multicastProvider.RunPinger(defaultMulticastAddress)
+
 	// go multicastProvider.RunListenner(defaultMulticastAddress)
 	startServcie(coapPort)
 }
