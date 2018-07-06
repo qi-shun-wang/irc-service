@@ -15,6 +15,7 @@ func setRouters(ci core.CoapInterface) {
 	mux.Handle("sendLongPressedEvent", coap.FuncHandler(handlers.SendLongPressedEvent(ci)))
 	mux.Handle("sendEventBegan", coap.FuncHandler(handlers.SendEventBeganHandler(ci)))
 	mux.Handle("sendEventEnd", coap.FuncHandler(handlers.SendEventEndHandler(ci)))
+	mux.Handle("detectEvent", coap.FuncHandler(handlers.DetectGameEventHandler(ci)))
 	mux.Handle("textInput", coap.FuncHandler(handlers.TextInputHandler(ci)))
 	mux.Handle("wireCheck", coap.FuncHandler(handlers.WireCheckHandler(ci)))
 	mux.Handle("ping", coap.FuncHandler(handlers.PingHandler(ci)))
