@@ -24,8 +24,8 @@ func GetSettingsSystemInfo(ch chan string) {
 //GetDeviceName .
 func GetDeviceName(ch chan string) {
 	cmd := Commander{}
-	result, err := cmd.OnCmds("settings --user current get global device_name;")
-
+	// result, err := cmd.OnCmds("settings --user current get global device_name;")
+	result, err := cmd.OnCmds("getprop sys.zin.kod.id;")
 	if err != nil {
 		log.Println("GetDeviceName:", err)
 	}
