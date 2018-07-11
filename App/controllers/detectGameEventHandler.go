@@ -30,6 +30,20 @@ func DetectGameEventHandler(ci core.CoapInterface) core.CoapHandler {
 	}
 }
 
+//GameEventHandler .
+func GameEventHandler(ci core.CoapInterface) core.CoapHandler {
+	return func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Message {
+
+		number := strings.Split(string(m.Payload), ";")
+		if len(number) > 2 {
+			cmds := parsedGameKeySerial(number[0], number[1])
+			ci.OnCmds(cmds)
+		}
+
+		return nil
+	}
+}
+
 //GameBeganHandler .
 func GameBeganHandler(ci core.CoapInterface) core.CoapHandler {
 	return func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Message {
@@ -51,6 +65,20 @@ func GameEndHandler(ci core.CoapInterface) core.CoapHandler {
 		number := strings.Split(string(m.Payload), ";")
 		if len(number) > 2 {
 			cmds := parsedGameEndKeySerial(number[0], number[1])
+			ci.OnCmds(cmds)
+		}
+
+		return nil
+	}
+}
+
+//GameDPADHandler .
+func GameDPADHandler(ci core.CoapInterface) core.CoapHandler {
+	return func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Message {
+
+		number := strings.Split(string(m.Payload), ";")
+		if len(number) > 3 {
+			cmds := parsedGameDPadKeySerial(number[0], number[1], number[2])
 			ci.OnCmds(cmds)
 		}
 
@@ -100,6 +128,16 @@ func GameAxisEventHandler(ci core.CoapInterface) core.CoapHandler {
 	}
 }
 
+func parsedGameKeySerial(eventNumber string, number string) string {
+	cmds := []string{}
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 1 "+number+" 1")
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 0 0 0")
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 1 "+number+" 0")
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 0 0 0")
+	fullCmds := strings.Join(cmds, ";")
+	return fullCmds
+}
+
 func parsedGameAxisEventKeySerial(eventNumber string, number string, value string) string {
 	cmds := []string{}
 	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 3 "+number+" "+value)
@@ -119,6 +157,16 @@ func parsedGameBeganKeySerial(eventNumber string, number string) string {
 func parsedGameEndKeySerial(eventNumber string, number string) string {
 	cmds := []string{}
 	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 1 "+number+" 0")
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 0 0 0")
+	fullCmds := strings.Join(cmds, ";")
+	return fullCmds
+}
+
+func parsedGameDPadKeySerial(eventNumber string, number string, direction string) string {
+	cmds := []string{}
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 3 "+number+" "+direction)
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 0 0 0")
+	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 3 "+number+" 0")
 	cmds = append(cmds, "sendevent /dev/input/event"+eventNumber+" 0 0 0")
 	fullCmds := strings.Join(cmds, ";")
 	return fullCmds
