@@ -26,5 +26,6 @@ func setRouters(ci core.CoapInterface) {
 	mux.Handle("gameDPadBegan", coap.FuncHandler(handlers.GameDPADBeganHandler(ci)))
 	mux.Handle("gameDPadEnd", coap.FuncHandler(handlers.GameDPADEndHandler(ci)))
 	mux.Handle("gameAxisEvent", coap.FuncHandler(handlers.GameAxisEventHandler(ci)))
+	mux.Handle("version", coap.FuncHandler(handlers.VersionHandler(ci)))
 
 }

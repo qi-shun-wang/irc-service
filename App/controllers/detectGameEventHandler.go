@@ -14,8 +14,8 @@ func DetectGameEventHandler(ci core.CoapInterface) core.CoapHandler {
 
 		if m.IsConfirmable() {
 			result, _ := ci.OnDebugCmds("getevent -p")
-			number := string([]rune(strings.SplitAfter(strings.SplitAfter(result, "Zinwell Gamepad F310")[0], "/dev/input/event")[1])[0])
-
+			list := strings.Split(strings.Split(result, "Zinwell Gamepad F310")[0], "/dev/input/event")
+			number := string([]rune(strings.Split(list[len(list)-1], ";")[0]))
 			res := &coap.Message{
 				Type:      coap.Acknowledgement,
 				Code:      coap.Content,
