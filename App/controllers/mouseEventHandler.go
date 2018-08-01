@@ -20,6 +20,15 @@ func MouseEventHandler(ci core.CoapInterface) core.CoapHandler {
 	}
 }
 
+//MouseTapEventHandler .
+func MouseTapEventHandler(ci core.CoapInterface) core.CoapHandler {
+	return func(l *net.UDPConn, a *net.UDPAddr, m *coap.Message) *coap.Message {
+		cmds := parsedMouseTap()
+		ci.OnCmds(cmds)
+		return nil
+	}
+}
+
 func parsedMouseSerial(number string) string {
 	cmds := []string{}
 	delta := "32"
@@ -62,6 +71,18 @@ func parsedMouseSerial(number string) string {
 		}
 
 	}
+	cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
+	log.Println()
+	fullCmds := strings.Join(cmds, ";")
+	log.Println(fullCmds)
+	return fullCmds
+}
+
+func parsedMouseTap() string {
+	cmds := []string{}
+	cmds = append(cmds, "sendevent /dev/input/event0 1 272 1")
+	cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
+	cmds = append(cmds, "sendevent /dev/input/event0 1 272 0")
 	cmds = append(cmds, "sendevent /dev/input/event0 0 0 0")
 	log.Println()
 	fullCmds := strings.Join(cmds, ";")
