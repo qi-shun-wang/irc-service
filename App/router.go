@@ -11,6 +11,8 @@ func setRouters(ci core.CoapInterface) {
 	mux.Handle("cmd", coap.FuncHandler(handlers.CommandHandler(ci)))
 	mux.Handle("mouseEvent", coap.FuncHandler(handlers.MouseEventHandler(ci)))
 	mux.Handle("mouseTapEvent", coap.FuncHandler(handlers.MouseTapEventHandler(ci)))
+	mux.Handle("scrollEvent", coap.FuncHandler(handlers.ScrollEventHandler(ci)))
+	mux.Handle("slideEvent", coap.FuncHandler(handlers.SlideEventHandler(ci)))
 	mux.Handle("keyEvent", coap.FuncHandler(handlers.KeyEventHandler(ci)))
 	mux.Handle("sendEvent", coap.FuncHandler(handlers.SendEventHandler(ci)))
 	mux.Handle("sendLongPressedEvent", coap.FuncHandler(handlers.SendLongPressedEvent(ci)))

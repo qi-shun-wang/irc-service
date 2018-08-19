@@ -18,7 +18,7 @@ func VersionHandler(ci core.CoapInterface) core.CoapHandler {
 				Code:      coap.Content,
 				MessageID: m.MessageID,
 				Token:     m.Token,
-				Payload:   []byte("1.0.0-RC.2"),
+				Payload:   []byte("1.0.0-RC.3"),
 			}
 			res.SetOption(coap.ContentFormat, coap.TextPlain)
 			return res
