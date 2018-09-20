@@ -22,7 +22,7 @@ Build an executable file named IRCService for Android arm7 target :
 
 ```
 
-env GOOS=linux GOARCH=arm GOARM=7 go build -o IRCService -v /Users/shun/go/src/IRCService/Run/main.go
+CC=$ANDROID_NDK_ROOT/bin/arm-linux-androideabi/bin/arm-linux-androideabi-gcc GOOS="android" GOARCH="arm" CGO_ENABLED="1" go build -v -o IRCService /Users/shun/go/src/IRCService/Run/main.go
 
 
 ```

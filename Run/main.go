@@ -1,6 +1,6 @@
 package main
 
-import app "IRCService/app"
+import "IRCService/app"
 
 func main() {
 	app.Setup()
